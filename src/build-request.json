@@ -1,0 +1,163 @@
+{
+  "kind": "build_request",
+  "title": "Expand Memory Match to 10 progressive levels and add mintable completion badge",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Replace the current 3-option difficulty system (easy/medium/hard) with a 10-level progression system (Level 1–Level 10) where each level increases difficulty by increasing the number of pairs and adjusting the grid layout accordingly.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "can we make it 10 levels each increasing in difficulty?"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The game offers Level 1 through Level 10 as selectable options (no Easy/Medium/Hard labels remain in the UI).",
+        "Each successive level has a strictly non-decreasing number of pairs, and overall difficulty clearly increases from Level 1 to Level 10.",
+        "The card grid layout adapts per level so the board is playable on mobile and desktop without overflowing the container.",
+        "Starting a new level reinitializes the deck, moves counter, and timer as it does today when changing difficulty."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add level progression UX: when a player completes a level, show a clear call-to-action to continue to the next level (Levels 1–9) and a distinct completion state on Level 10 indicating the full game run is complete.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "can we make it 10 levels each increasing in difficulty?"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On completing Levels 1–9, the win panel includes a “Next Level” action that starts the next level immediately.",
+        "On Level 10 completion, the win panel indicates that all levels are complete (in English user-facing text).",
+        "A player can still restart the current level from the win panel (equivalent to current “Play Again” behavior)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement backend persistence for per-user level progress using Internet Identity principals, including: reading current progress, recording a completed level, and checking whether all 10 levels are completed.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "can we make it 10 levels each increasing in difficulty?"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes canister methods to (a) get the caller’s current progress and (b) record that a given level has been completed by the caller.",
+        "Progress is stored in stable state so it persists across canister upgrades and page reloads.",
+        "Recording completion is idempotent (re-submitting a previously completed level does not break state).",
+        "Progress is scoped to the authenticated caller principal (no shared global progress)."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Wire frontend completion events to the backend so that when an authenticated user completes a level, the app records that completion and reflects persisted progress in the UI; if the user is not logged in, the UI should clearly prompt them to log in with Internet Identity to save progress.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "can we make it 10 levels each increasing in difficulty?"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When a logged-in user completes a level, the frontend calls the backend to mark that level as completed.",
+        "On reload, the app can fetch and display the user’s saved progress (e.g., highest completed level and/or completed levels).",
+        "If the user is not authenticated, the app does not attempt to write progress and instead shows an English message prompting login to save progress."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add a mintable completion badge: implement a backend “mint badge” action that can only be performed by a user who has completed all 10 levels, and store a persistent minted-badge record for that user.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "also can there be a mintable badge for anyone who completes it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes a method to mint a badge for the caller.",
+        "Minting succeeds only if the caller has completed all 10 levels; otherwise it returns an error.",
+        "Minting is one-time per caller (subsequent calls do not mint duplicates and return a clear result).",
+        "Backend exposes a method to query whether the caller has minted the badge (and basic badge metadata such as mint timestamp and a badge id)."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add frontend UI to claim the completion badge: after Level 10 is completed (and/or when persisted progress indicates all levels are complete), show a “Mint Badge” button for authenticated users, display minting status, and show a “Badge minted” state once successful.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "also can there be a mintable badge for anyone who completes it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When the user is authenticated and all 10 levels are complete, the UI shows a “Mint Badge” action.",
+        "Clicking “Mint Badge” calls the backend mint method and shows loading/disabled states to prevent double submits.",
+        "After minting, the UI shows a persistent “Badge minted” state based on backend query results (survives page reload).",
+        "If the user is not authenticated, the badge claim UI prompts login instead of attempting to mint."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add a badge image asset and render it as part of the “Badge minted”/completion UI (static asset served from the frontend).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "also can there be a mintable badge for anyone who completes it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A generated badge image exists in frontend/public/assets/generated and is displayed in the badge UI.",
+        "The badge image is loaded directly from the frontend as a static file (not served via the backend)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo; do not introduce additional backend services.",
+    "Do not edit files in frontend immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Use English for all user-facing text.",
+    "Do not route generated images through the backend; serve them from frontend/public/assets/generated."
+  ],
+  "nonGoals": [
+    "Implementing a full NFT/ICRC token standard for the badge (the badge can be a canister-stored achievement record).",
+    "Integrating third-party wallets (e.g., MetaMask, WalletConnect) or external authentication providers.",
+    "Adding additional card packs/themes beyond the existing emoji-based deck selection (unless required to support the 10 level configs)."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Achievement badge emblem illustration, gold medal with ribbon and subtle sparkle on a transparent background (completion-badge.dim_512x512.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

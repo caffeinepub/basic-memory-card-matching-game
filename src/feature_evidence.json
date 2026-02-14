@@ -1,0 +1,100 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-replace-the-current-3-option-difficulty-system-easy-medium-hard-with-a-10-level-progression-system-level-1-level-10-where-each-level-increases-difficulty-by-increasing-the-number-of-pairs-and-adjusting-the-grid-layout-accordingly",
+      "featureTitle": "Replace the current 3-option difficulty system (easy/medium/hard) with a 10-level progression system (Level 1–Level 10) where each level increases difficulty by increasing the number of pairs and adjusting the grid layout accordingly.",
+      "files": [
+        "frontend/src/features/memory-game/MemoryGameView.tsx",
+        "frontend/src/features/memory-game/types.ts",
+        "frontend/src/features/memory-game/useMemoryGame.ts",
+        "frontend/src/features/memory-game/utils.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-level-progression-ux-when-a-player-completes-a-level-show-a-clear-call-to-action-to-continue-to-the-next-level-levels-1-9-and-a-distinct-completion-state-on-level-10-indicating-the-full-game-run-is-complete",
+      "featureTitle": "Add level progression UX: when a player completes a level, show a clear call-to-action to continue to the next level (Levels 1–9) and a distinct completion state on Level 10 indicating the full game run is complete.",
+      "files": [
+        "frontend/src/features/memory-game/MemoryGameView.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-wire-frontend-completion-events-to-the-backend-so-that-when-an-authenticated-user-completes-a-level-the-app-records-that-completion-and-reflects-persisted-progress-in-the-ui-if-the-user-is-not-logged-in-the-ui-should-clearly-prompt-them-to-log-in-with-internet-identity-to-save-progress",
+      "featureTitle": "Wire frontend completion events to the backend so that when an authenticated user completes a level, the app records that completion and reflects persisted progress in the UI; if the user is not logged in, the UI should clearly prompt them to log in with Internet Identity to save progress.",
+      "files": [
+        "frontend/src/features/memory-game/MemoryGameView.tsx",
+        "frontend/src/features/memory-game/useProgress.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-frontend-ui-to-claim-the-completion-badge-after-level-10-is-completed-and-or-when-persisted-progress-indicates-all-levels-are-complete-show-a-mint-badge-button-for-authenticated-users-display-minting-status-and-show-a-badge-minted-state-once-successful",
+      "featureTitle": "Add frontend UI to claim the completion badge: after Level 10 is completed (and/or when persisted progress indicates all levels are complete), show a “Mint Badge” button for authenticated users, display minting status, and show a “Badge minted” state once successful.",
+      "files": [
+        "frontend/src/features/memory-game/MemoryGameView.tsx",
+        "frontend/src/features/memory-game/useProgress.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-badge-image-asset-and-render-it-as-part-of-the-badge-minted-completion-ui-static-asset-served-from-the-frontend",
+      "featureTitle": "Add a badge image asset and render it as part of the “Badge minted”/completion UI (static asset served from the frontend).",
+      "files": [
+        "frontend/src/features/memory-game/MemoryGameView.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

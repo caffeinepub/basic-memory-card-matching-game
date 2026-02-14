@@ -1,0 +1,123 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Memory Match: 10-level progression, saved progress UX, and completion badge claim UI",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Replace Easy/Medium/Hard with selectable Level 1–Level 10 configs that increase pairs and adapt the grid layout per level.",
+      "acceptanceCriteria": [
+        "The game offers Level 1 through Level 10 as selectable options (no Easy/Medium/Hard labels remain in the UI).",
+        "Each successive level has a strictly non-decreasing number of pairs, and overall difficulty clearly increases from Level 1 to Level 10.",
+        "The card grid layout adapts per level so the board is playable on mobile and desktop without overflowing the container.",
+        "Starting a new level reinitializes the deck, moves counter, and timer as it does today when changing difficulty."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/memory-game/types.ts",
+          "operation": "modify",
+          "description": "Replace the current Difficulty union with a 10-level type (Level 1–Level 10) and update DIFFICULTY_CONFIGS to define increasing pair counts and responsive grid column classes per level. Ensure labels are English and only use “Level X …” wording. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/memory-game/utils.ts",
+          "operation": "modify",
+          "description": "Update createDeck/getGridClass helpers to use the new level-based config. Ensure deck creation scales up to Level 10 pair counts without exceeding available emoji set size. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/memory-game/useMemoryGame.ts",
+          "operation": "modify",
+          "description": "Update the hook signature and reset logic to accept the new level type and reinitialize deck/moves/lock/complete state when changing levels (same behavior as today for difficulty changes). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/memory-game/MemoryGameView.tsx",
+          "operation": "modify",
+          "description": "Replace difficulty selection UI with a Level 1–10 Select driven by updated DIFFICULTY_CONFIGS; ensure changing the level reinitializes deck, moves counter, and timer. Use existing shadcn/ui Select, Button, Card, Badge components for consistent UI. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Add level progression UX with a Next Level action for Levels 1–9 and a distinct full-completion message for Level 10, while retaining restart/play again.",
+      "acceptanceCriteria": [
+        "On completing Levels 1–9, the win panel includes a “Next Level” action that starts the next level immediately.",
+        "On Level 10 completion, the win panel indicates that all levels are complete (in English user-facing text).",
+        "A player can still restart the current level from the win panel (equivalent to current “Play Again” behavior)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/memory-game/MemoryGameView.tsx",
+          "operation": "modify",
+          "description": "Extend the win panel to: (a) show “Next Level” for Levels 1–9 that increments level selection, resets game state, and resets timer immediately; (b) show an explicit “All levels complete” message on Level 10 completion; (c) keep “Play Again” to restart the current level. Use shadcn/ui Button/Card/Badge components for actions and messaging. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Record authenticated level completion to the backend and display persisted progress; prompt Internet Identity login when unauthenticated to save progress.",
+      "acceptanceCriteria": [
+        "When a logged-in user completes a level, the frontend calls the backend to mark that level as completed.",
+        "On reload, the app can fetch and display the user’s saved progress (e.g., highest completed level and/or completed levels).",
+        "If the user is not authenticated, the app does not attempt to write progress and instead shows an English message prompting login to save progress."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Align the frontend actor TypeScript types with the backend capabilities used by the UI for progress + badge claim flows. Ensure level progress reads/writes and badge status/claim functions are typed for frontend use. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/memory-game/useProgress.ts",
+          "operation": "create",
+          "description": "Add a dedicated hook that uses existing immutable hooks (useActor/useInternetIdentity) plus React Query to: fetch saved progress (e.g., completed levels count and/or per-level completion), record the current level completion on win for authenticated users, and expose derived UI state (logged in, progress summary, loading/error flags). Do not attempt to write progress when identity is absent; instead expose a flag/message for the UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/memory-game/MemoryGameView.tsx",
+          "operation": "modify",
+          "description": "Wire level completion to persisted progress: on win, if authenticated, call the backend capability via the actor to record completion; on mount/identity change, fetch and display saved progress (e.g., “Progress: X/10”). If unauthenticated, show an English prompt and a “Log in to save progress” action using useInternetIdentity.login. Use existing shadcn/ui Button/Badge/Card components. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add UI to claim a completion badge for authenticated users who have completed all 10 levels, including loading states and a persisted “Badge minted” state.",
+      "acceptanceCriteria": [
+        "When the user is authenticated and all 10 levels are complete, the UI shows a “Mint Badge” action.",
+        "Clicking “Mint Badge” calls the backend mint method and shows loading/disabled states to prevent double submits.",
+        "After minting, the UI shows a persistent “Badge minted” state based on backend query results (survives page reload).",
+        "If the user is not authenticated, the badge claim UI prompts login instead of attempting to mint."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/memory-game/useProgress.ts",
+          "operation": "modify",
+          "description": "Extend the progress hook to include badge-claim state: query whether the badge is already minted, expose a “canMint” derived boolean (authenticated + all 10 complete + not minted), and provide a mint action that triggers the backend mint capability with loading/disabled handling and refetches badge status on success. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/memory-game/MemoryGameView.tsx",
+          "operation": "modify",
+          "description": "Add a badge-claim section that appears when Level 10 is complete and/or when persisted progress indicates all 10 levels complete. For authenticated users, show a “Mint Badge” button with loading/disabled states and show a persistent “Badge minted” state when backend status indicates success. For unauthenticated users, show English login prompt + login action instead of calling mint. Use shadcn/ui Button/Card/Badge components. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add a generated completion badge image asset and render it in the completion/minted badge UI as a static frontend asset.",
+      "acceptanceCriteria": [
+        "A generated badge image exists in frontend/public/assets/generated and is displayed in the badge UI.",
+        "The badge image is loaded directly from the frontend as a static file (not served via the backend)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/completion-badge.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated badge image asset (transparent background) at exactly this path so it can be served statically by the frontend build system."
+        },
+        {
+          "path": "frontend/src/features/memory-game/MemoryGameView.tsx",
+          "operation": "modify",
+          "description": "Render the static badge image from frontend/public/assets/generated/completion-badge.dim_512x512.png within the “Badge minted”/completion UI so users can visually see the achievement. Use existing layout components (shadcn/ui Card/Badge where appropriate). Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

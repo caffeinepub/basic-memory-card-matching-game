@@ -1,0 +1,23 @@
+{
+  "backend/main.mo": "Defines backend actor with stubbed level completion, badge checks, and progress queries using temporary in-memory placeholders.",
+  "feature_evidence.json": "Lists feature evidence entries mapping features to affected frontend files and components for the memory game.",
+  "frontend-file-summaries.txt": "Provides short manual summaries of all frontend project files for reference.",
+  "frontend/index.css": "Sets global Tailwind layers and defines light/dark theme color tokens and base styles.",
+  "frontend/index.html": "HTML entry file mounting the React app and loading main.tsx with metadata and favicon.",
+  "frontend/src/App.tsx": "Wraps the app in a React Query provider and renders the MemoryGameView with notifications.",
+  "frontend/src/features/memory-game/MemoryCard.tsx": "Renders an individual flip card with front/back faces, animations, and click handling.",
+  "frontend/src/features/memory-game/MemoryGameView.tsx": "Main UI managing game levels, timer, card display, custom card backs, authentication, progress saving, and badge minting.",
+  "frontend/src/features/memory-game/types.ts": "Defines core game types including Card, Level, and level difficulty configs for pairs and grid layout.",
+  "frontend/src/features/memory-game/useCardBackImage.ts": "Hook for selecting, previewing, validating, persisting, and resetting a custom card-back image.",
+  "frontend/src/features/memory-game/useMemoryGame.ts": "Custom hook managing memory game state, card flipping logic, match checking, and game reset.",
+  "frontend/src/features/memory-game/useProgress.ts": "Tracks user progress via backend actor, including completed levels, badge status, and provides mutations to update them.",
+  "frontend/src/features/memory-game/useTimer.ts": "Provides a simple timer with start, stop, reset, and formatted time output.",
+  "frontend/src/features/memory-game/utils.ts": "Generates shuffled emoji card decks based on difficulty and exposes shuffle and grid utility helpers.",
+  "frontend/src/hooks/useActor.ts": "Creates and manages an authenticated or anonymous backend actor, refreshing dependent queries on changes.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Implements Internet Identity auth context, handling identity loading, login, logout, and status tracking.",
+  "frontend/src/index.css": "Tailwind base styles and custom CSS variables plus flip-card animation utilities.",
+  "frontend/src/lib/utils.ts": "Exports a class name merging helper using clsx and tailwind-merge.",
+  "frontend/src/main.tsx": "App entry that sets up React Query and Internet Identity providers before rendering App.",
+  "frontend/tailwind.config.js": "Tailwind configuration defining theme colors, plugins, extended utilities, and dark mode settings.",
+  "project_state.json": "JSON describing current and planned features for a memory card game, including expansion to 10 levels, progression UX, backend persistence, and a mintable completion badge. It also lists existing features, new requests, and required image assets."
+}

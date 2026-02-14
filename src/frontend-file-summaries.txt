@@ -1,0 +1,15 @@
+{
+  "frontend/src/App.tsx": "Root application component providing React Query context and rendering the MemoryGameView with Toaster for notifications.",
+  "frontend/src/index.css": "Global styles with warm coral/peach OKLCH color palette and custom flip-card animation utilities for the memory game.",
+  "frontend/index.html": "HTML entry point with app title, favicon reference, and meta tags for the memory game.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with success color tokens and custom design system values.",
+  "frontend/src/lib/utils.ts": "Utility function for merging Tailwind CSS classes using clsx and tailwind-merge.",
+  "frontend/src/features/memory-game/types.ts": "Defines Level type (1-10) and DIFFICULTY_CONFIGS with increasing pair counts (4-24 pairs) and responsive grid layouts for each level.",
+  "frontend/src/features/memory-game/utils.ts": "Utility functions for creating shuffled card decks with expanded emoji set (48 emojis) to support up to 24 pairs for Level 10, and grid class helpers.",
+  "frontend/src/features/memory-game/useTimer.ts": "Custom React hook for managing game timer with start, stop, and reset functionality.",
+  "frontend/src/features/memory-game/useMemoryGame.ts": "Core game logic hook managing card flipping, matching, move counting, and win detection, updated to work with Level type instead of Difficulty.",
+  "frontend/src/features/memory-game/MemoryCard.tsx": "Presentational card component with 3D flip animation that accepts a configurable cardBackSrc prop for the face-down state while preserving all existing flip behavior and accessibility features.",
+  "frontend/src/features/memory-game/MemoryGameView.tsx": "Main game view orchestrating 10-level progression, next level navigation, authenticated progress display, login prompts, badge claim UI with static badge image, and all existing game features.",
+  "frontend/src/features/memory-game/useCardBackImage.ts": "Custom React hook that manages card back image selection, validation, preview, localStorage persistence, and reset functionality with robust error handling and fallback to default image.",
+  "frontend/src/features/memory-game/useProgress.ts": "Custom hook managing authenticated user progress tracking, level completion recording, badge status queries, and badge minting via React Query and backend actor."
+}

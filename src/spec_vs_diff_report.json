@@ -1,0 +1,70 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-14T07:25:23.303Z",
+  "summary": "Frontend implements a 10-level config and adds progress/badge hooks wired via React Query, but backend progress and badge minting are largely stubbed/non-persistent, and the required static badge image asset is not evidenced in the diff. Badge minting UI/logic appears to use a workaround (calling completeLevel(10)) instead of a real mint method.",
+  "missing_requirements": [
+    {
+      "id": "REQ-3",
+      "requirement": "Implement backend persistence for per-user level progress using Internet Identity principals (get progress, record completed level, persist in stable state, idempotent, scoped to caller).",
+      "reason": "backend/main.mo does not store any per-user progress: it creates a fresh empty Set/Map inside each call, returns constant values (e.g., getCompletedLevelsCount returns 0), and does not show stable storage or upgrade persistence. Also methods accept a user Principal argument rather than using caller-scoped storage.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Add a mintable completion badge backend action: mint only after all 10 levels completed; one-time per caller; persistent badge record; query badge status with metadata (timestamp, badge id).",
+      "reason": "backend/main.mo only includes isBadgeMinted returning false and has no mint method or persistent badge record/metadata. No eligibility checks or one-time mint logic are implemented.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Frontend UI to claim completion badge: show “Mint Badge” when authenticated and all 10 complete; call backend mint method; show loading/disabled; persistent minted state based on backend query; prompt login if not authenticated.",
+      "reason": "useProgress.ts explicitly states the backend lacks a mintBadge method and uses a workaround calling completeLevel(principal, 10) instead of minting. This does not satisfy calling a dedicated backend mint method or returning/querying badge metadata. Persistent minted state cannot work because backend isBadgeMinted always returns false.",
+      "evidence": [
+        "frontend/src/features/memory-game/useProgress.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Add a generated badge image asset at frontend/public/assets/generated/completion-badge.dim_512x512.png and render it in the badge UI (served statically from frontend).",
+      "reason": "No file addition/modification under frontend/public/assets/generated is shown in the diff summary for the required completion-badge image. Rendering is mentioned only in a high-level file summary, but the actual asset path/file is not evidenced.",
+      "evidence": [
+        "<file-diff> (no added asset under frontend/public/assets/generated)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Added React Query (QueryClientProvider) app-wide state/query layer.",
+      "reason": "Not explicitly requested in the BuildRequest; it is an implementation choice introduced in App.tsx.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend/src/features/memory-game/useProgress.ts"
+      ]
+    },
+    {
+      "description": "Added backend query method isLevelCompleted.",
+      "reason": "BuildRequest/AC only require methods to get current progress and record completion, plus badge mint/query; an isLevelCompleted method is not requested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "confidence": 0.78,
+  "changed_files": [
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/src/App.tsx",
+    "frontend/src/features/memory-game/MemoryGameView.tsx",
+    "frontend/src/features/memory-game/types.ts",
+    "frontend/src/features/memory-game/useMemoryGame.ts",
+    "frontend/src/features/memory-game/useProgress.ts",
+    "frontend/src/features/memory-game/utils.ts",
+    "project_state.json"
+  ]
+}

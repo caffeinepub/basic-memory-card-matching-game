@@ -1,2 +1,3 @@
-# basic-memory-card-matching-game
-Exported from Caffeine project: Expand Memory Match to 10 progressive levels and add mintable completion badge
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

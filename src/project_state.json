@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Memory card-matching game with progressive difficulty; planning to expand from 3 difficulty modes to 10 increasing levels and add a completion reward.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Achievement badge emblem illustration, gold medal with ribbon and subtle sparkle on a transparent background (completion-badge.dim_512x512.png)",
+  "existing_features": [
+    {
+      "id": "feature-replace-the-current-3-option-difficulty-system-easy-medium-hard-with-a-10-level-progression-system-level-1-level-10-where-each-level-increases-difficulty-by-increasing-the-number-of-pairs-and-adjusting-the-grid-layout-accordingly",
+      "title": "Replace the current 3-option difficulty system (easy/medium/hard) with a 10-level progression system (Level 1–Level 10) where each level increases difficulty by increasing the number of pairs and adjusting the grid layout accordingly.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-level-progression-ux-when-a-player-completes-a-level-show-a-clear-call-to-action-to-continue-to-the-next-level-levels-1-9-and-a-distinct-completion-state-on-level-10-indicating-the-full-game-run-is-complete",
+      "title": "Add level progression UX: when a player completes a level, show a clear call-to-action to continue to the next level (Levels 1–9) and a distinct completion state on Level 10 indicating the full game run is complete.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-wire-frontend-completion-events-to-the-backend-so-that-when-an-authenticated-user-completes-a-level-the-app-records-that-completion-and-reflects-persisted-progress-in-the-ui-if-the-user-is-not-logged-in-the-ui-should-clearly-prompt-them-to-log-in-with-internet-identity-to-save-progress",
+      "title": "Wire frontend completion events to the backend so that when an authenticated user completes a level, the app records that completion and reflects persisted progress in the UI; if the user is not logged in, the UI should clearly prompt them to log in with Internet Identity to save progress.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-frontend-ui-to-claim-the-completion-badge-after-level-10-is-completed-and-or-when-persisted-progress-indicates-all-levels-are-complete-show-a-mint-badge-button-for-authenticated-users-display-minting-status-and-show-a-badge-minted-state-once-successful",
+      "title": "Add frontend UI to claim the completion badge: after Level 10 is completed (and/or when persisted progress indicates all levels are complete), show a “Mint Badge” button for authenticated users, display minting status, and show a “Badge minted” state once successful.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-badge-image-asset-and-render-it-as-part-of-the-badge-minted-completion-ui-static-asset-served-from-the-frontend",
+      "title": "Add a badge image asset and render it as part of the “Badge minted”/completion UI (static asset served from the frontend).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Expand game progression to 10 levels with increasing difficulty",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add a mintable badge reward for users who complete all levels",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Implement backend persistence for per-user level progress using Internet Identity principals, including: reading current progress, recording a completed level, and checking whether all 10 levels are completed.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add a mintable completion badge: implement a backend “mint badge” action that can only be performed by a user who has completed all 10 levels, and store a persistent minted-badge record for that user.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Expand Memory Match to 10 progressive levels and add mintable completion badge",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
